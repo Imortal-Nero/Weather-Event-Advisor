@@ -76,6 +76,8 @@ User Input
 ---
 
 ## Project Structure
+
+```
 Weather_Event_Advisor/
 │
 ├── app.py
@@ -83,10 +85,11 @@ Weather_Event_Advisor/
 ├── evaluate_model.py
 ├── test_api.py
 ├── dataset/
-│ └── weather_classification_data.csv
+│   └── weather_classification_data.csv
 ├── requirements.txt
 ├── README.md
 └── models/ (optional trained artifacts)
+```
 
 ---
 
