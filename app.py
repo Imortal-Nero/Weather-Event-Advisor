@@ -3,12 +3,13 @@ import numpy as np
 import joblib
 import gradio as gr
 import os
+import pyperclip   # ✅ NEW (for copy support)
 
 from dotenv import load_dotenv
 import google.generativeai as genai
 
 # -------------------------
-# Load Environment Variables
+# ENV
 # -------------------------
 load_dotenv()
 
@@ -21,13 +22,13 @@ gemini_model = genai.GenerativeModel(
 )
 
 # -------------------------
-# Load Trained Model
+# MODEL
 # -------------------------
 model = joblib.load("models/knn_weather.pkl")
 label_encoder = joblib.load("models/label_encoder.pkl")
 
 # -------------------------
-# Input Validation
+# VALIDATION
 # -------------------------
 def validate_inputs(
     temperature,
@@ -66,7 +67,7 @@ def validate_inputs(
     return True, ""
 
 # -------------------------
-# Gemini Advisory
+# GEMINI ADVISORY
 # -------------------------
 def generate_advisory(weather_type):
 
@@ -76,42 +77,18 @@ You are an event management consultant.
 Predicted Weather Type: {weather_type}
 
 Generate:
-
 1. Logistics Adjustments
 2. Safety Precautions
 3. Vendor Notifications
-
-Use clear bullet points.
 """
 
     try:
-
-        response = gemini_model.generate_content(prompt)
-
-        return response.text
-
-    except Exception as e:
-
-        return f"""
-Advisory service unavailable.
-
-Fallback Advisory
-
-LOGISTICS
-• Prepare backup arrangements.
-
-SAFETY
-• Monitor weather updates.
-
-VENDOR NOTIFICATIONS
-• Inform all vendors about possible weather impacts.
-
-Error:
-{str(e)}
-"""
+        return gemini_model.generate_content(prompt).text
+    except:
+        return "Advisory service unavailable"
 
 # -------------------------
-# Prediction Function
+# MAIN FUNCTION
 # -------------------------
 def predict_weather(
     temperature,
@@ -140,7 +117,7 @@ def predict_weather(
     )
 
     if not valid:
-        return message, ""
+        return message, "", ""
 
     sample = pd.DataFrame({
         "Temperature":[temperature],
@@ -157,60 +134,82 @@ def predict_weather(
 
     prediction = model.predict(sample)
 
-    weather_type = label_encoder.inverse_transform(
-        prediction
-    )[0]
+    weather_type = label_encoder.inverse_transform(prediction)[0]
 
     advisory = generate_advisory(weather_type)
 
-    return weather_type, advisory
+    # 📄 FINAL REPORT
+    report = f"""
+Weather Intelligence Report
 
-# -------------------------
-# Gradio UI
-# -------------------------
-app = gr.Interface(
-    fn=predict_weather,
+Prediction: {weather_type}
 
-    inputs=[
-        gr.Number(label="Temperature (°C)"),
-        gr.Number(label="Humidity (%)"),
-        gr.Number(label="Wind Speed (km/h)"),
-        gr.Number(label="Precipitation (%)"),
+Inputs:
+Temp: {temperature}
+Humidity: {humidity}
+Wind: {wind_speed}
+Precipitation: {precipitation}
+Cloud: {cloud_cover}
+Pressure: {pressure}
+UV: {uv_index}
+Season: {season}
+Visibility: {visibility}
+Location: {location}
 
-        gr.Dropdown(
-            ["clear", "partly cloudy", "overcast"],
-            label="Cloud Cover"
-        ),
-
-        gr.Number(label="Atmospheric Pressure"),
-
-        gr.Number(label="UV Index"),
-
-        gr.Dropdown(
-            ["Winter", "Spring", "Summer", "Autumn"],
-            label="Season"
-        ),
-
-        gr.Number(label="Visibility (km)"),
-
-        gr.Dropdown(
-            ["inland", "coastal", "mountain"],
-            label="Location"
-        )
-    ],
-
-    outputs=[
-        gr.Textbox(label="Predicted Weather Type"),
-        gr.Textbox(label="Event Management Advisory")
-    ],
-
-    title="AI Weather Event Advisor",
-
-    description="""
-Predict weather conditions using a KNN classifier
-and generate event management recommendations
-using Gemini AI.
+ADVISORY:
+{advisory}
 """
-)
+
+    return weather_type, advisory, report
+
+# -------------------------
+# COPY FUNCTION
+# -------------------------
+def copy_text(text):
+    pyperclip.copy(text)
+    return "Copied to clipboard ✅"
+
+# -------------------------
+# UI
+# -------------------------
+with gr.Blocks() as app:
+
+    gr.Markdown("# 🌦 Weather Intelligence System")
+
+    with gr.Row():
+
+        with gr.Column():
+            t = gr.Number(label="Temperature")
+            h = gr.Number(label="Humidity")
+            w = gr.Number(label="Wind Speed")
+            p = gr.Number(label="Precipitation")
+            c = gr.Dropdown(["clear","partly cloudy","overcast"], label="Cloud Cover")
+            pr = gr.Number(label="Pressure")
+            uv = gr.Number(label="UV Index")
+            s = gr.Dropdown(["Winter","Spring","Summer","Autumn"], label="Season")
+            v = gr.Number(label="Visibility")
+            l = gr.Dropdown(["inland","coastal","mountain"], label="Location")
+
+            btn = gr.Button("Run")
+
+        with gr.Column():
+            out1 = gr.Textbox(label="Prediction")
+            out2 = gr.Textbox(label="AI Advisory")
+            report_box = gr.Textbox(label="Full Report", lines=15)
+
+            copy_btn = gr.Button("📋 Copy Report")
+            copy_status = gr.Textbox(label="Status")
+
+    btn.click(
+        predict_weather,
+        inputs=[t,h,w,p,c,pr,uv,s,v,l],
+        outputs=[out1,out2,report_box]
+    )
+
+    copy_btn.click(
+        copy_text,
+        inputs=report_box,
+        outputs=copy_status
+    )
 
 app.launch()
