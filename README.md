@@ -1,164 +1,78 @@
-\# Weather Event Advisor System (AI + ML + Gemini)
+# Weather Event Advisor System (AI + ML + Gemini)
 
+## Overview
+This project is an AI-based weather classification system that uses a K-Nearest Neighbors (KNN) machine learning model to predict weather conditions and integrates Google Gemini API to generate intelligent weather advisories.
 
+The system also includes input validation and API error recovery to ensure reliability and robustness in real-world scenarios.
 
-\## Overview
+---
 
-This project is an AI-based weather classification system that uses a K-Nearest Neighbors (KNN) model to predict weather conditions and integrates Google Gemini API to generate intelligent weather advisories.
+## Features
 
+### Weather Prediction (Machine Learning)
+- K-Nearest Neighbors (KNN) classifier
+- Predicts weather types:
+  - Sunny
+  - Rainy
+  - Cloudy
+  - Snowy
+- Uses preprocessing techniques:
+  - StandardScaler
+  - OneHotEncoder
 
+---
 
-\---
+### Input Validation System
+Ensures only valid sensor data is processed:
+- Temperature range validation
+- Humidity validation
+- Wind speed validation
+- Atmospheric pressure validation
 
+This prevents unrealistic inputs from reaching the ML model.
 
+---
 
-\## Features
+### AI Advisory System (Gemini API)
+- Uses Google Gemini API to generate intelligent weather advisories
+- Provides:
+  - Safety recommendations
+  - Travel guidance
+  - Emergency instructions
+  - Logistics suggestions
 
+---
 
+### API Error Recovery
+- Implements try-except handling for API failures
+- If Gemini API fails:
+  - System does not crash
+  - Fallback advisory is displayed
 
-\### Weather Prediction
+Ensures continuous system operation.
 
-\- K-Nearest Neighbors (KNN) classifier
+---
 
-\- Predicts: Sunny, Rainy, Cloudy, Snowy
-
-\- Data preprocessing using StandardScaler and OneHotEncoder
-
-
-
-\### Input Validation
-
-\- Validates sensor inputs before prediction
-
-\- Checks realistic ranges for temperature, humidity, wind speed, and pressure
-
-\- Prevents invalid data from reaching the model
-
-
-
-\### AI Advisory System
-
-\- Uses Google Gemini API to generate weather advisories
-
-\- Provides safety and logistics recommendations
-
-
-
-\### API Error Recovery
-
-\- Implements fallback advisory system
-
-\- Ensures system does not crash if API fails
-
-
-
-\---
-
-
-
-\## System Flow
-
-
+## System Architecture
 
 User Input  
-
 → Input Validation  
+→ Data Preprocessing  
+→ KNN Model Prediction  
+→ Weather Classification  
+→ Gemini API Advisory Generation  
+→ Output Display (Gradio Interface)
 
-→ Preprocessing  
+---
 
-→ KNN Model  
+## Tech Stack
+- Python
+- Scikit-learn
+- Pandas
+- NumPy
+- Gradio
+- Google Gemini API
 
-→ Weather Prediction  
+---
 
-→ Gemini API  
-
-→ Advisory Output (Gradio Interface)
-
-
-
-\---
-
-
-
-\## Tech Stack
-
-\- Python
-
-\- Scikit-learn
-
-\- Pandas
-
-\- NumPy
-
-\- Gradio
-
-\- Google Gemini API
-
-
-
-\---
-
-
-
-\## Project Structure
-
-Weather\_Event\_Advisor/
-
-├── app.py
-
-├── train\_model.py
-
-├── evaluate\_model.py
-
-├── test\_api.py
-
-├── dataset/
-
-├── requirements.txt
-
-└── README.md
-
-
-
-\---
-
-
-
-\## Testing
-
-The system has been tested for:
-
-\- Normal weather conditions
-
-\- Extreme weather inputs
-
-\- Invalid sensor ranges
-
-\- API failure scenarios
-
-
-
-\---
-
-
-
-\## Future Improvements
-
-\- Real-time weather API integration
-
-\- Mobile application version
-
-\- Cloud deployment
-
-\- IoT sensor integration
-
-
-
-\---
-
-
-
-\## Author
-
-AI and Machine Learning project for weather classification and advisory generation.
-
+## Project Structure
