@@ -149,6 +149,26 @@ If Gemini API fails, the system returns a fallback response:
 
 ---
 
+## Dataset Source
+
+The dataset used in this project is publicly available and used for training the weather classification model.
+
+- Dataset Name: Weather Classification Dataset  
+- Source: Kaggle  
+- Link: https://www.kaggle.com/datasets/saurabhshahane/weather-classification
+
+This dataset contains weather-related parameters such as temperature, humidity, wind speed, pressure, and visibility, which are used to classify weather conditions.
+
+---
+
+## References
+
+- Google Gemini API Documentation: https://ai.google.dev/
+- Scikit-learn Documentation: https://scikit-learn.org/
+- Gradio Documentation: https://www.gradio.app/
+
+---
+
 ## Author
 Developed as an AI and Machine Learning project for intelligent weather classification and advisory generation.
 
