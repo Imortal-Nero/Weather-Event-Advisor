@@ -1,5 +1,8 @@
 # Weather Event Advisor System (AI + ML + Gemini)
 
+
+![Banner](banner.png)
+
 ## Overview
 This project is an AI-based weather classification system that uses a K-Nearest Neighbors (KNN) machine learning model to predict weather conditions and integrates Google Gemini API to generate intelligent weather advisories.
 
