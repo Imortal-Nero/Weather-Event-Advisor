@@ -76,3 +76,80 @@ User Input
 ---
 
 ## Project Structure
+Weather_Event_Advisor/
+│
+├── app.py
+├── train_model.py
+├── evaluate_model.py
+├── test_api.py
+├── dataset/
+│ └── weather_classification_data.csv
+├── requirements.txt
+├── README.md
+└── models/ (optional trained artifacts)
+
+---
+
+## Testing
+
+The system has been tested for the following scenarios:
+
+### Valid Weather Conditions
+- Sunny conditions
+- Rainy conditions
+- Cloudy conditions
+- Snowy conditions
+
+### Edge Cases
+- Extreme temperature values
+- High humidity conditions
+- Low visibility scenarios
+
+### Validation Testing
+- Out-of-range sensor inputs
+- Invalid numerical values
+
+### API Failure Testing
+- Invalid API key
+- Network failure
+- Gemini service downtime
+
+---
+
+## Input Validation Rules
+
+- Temperature: -60°C to 60°C
+- Humidity: 0% to 100%
+- Wind Speed: 0 to 300 km/h
+- Atmospheric Pressure: 800 to 1200 hPa
+
+Invalid inputs are rejected before prediction.
+
+---
+
+## API Error Handling
+
+If Gemini API fails, the system returns a fallback response:
+
+- System remains functional
+- Basic safety advisory is shown
+- No system crash occurs
+
+---
+
+## Future Improvements
+- Real-time weather API integration
+- Mobile application development
+- Cloud deployment
+- IoT sensor integration
+- Deep learning-based weather prediction
+
+---
+
+## Author
+Developed as an AI and Machine Learning project for intelligent weather classification and advisory generation.
+
+---
+
+## License
+This project is for educational purposes.
